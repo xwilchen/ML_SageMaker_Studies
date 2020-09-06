@@ -46,7 +46,7 @@ def _get_train_loader(batch_size, data_dir):
     print("Get data loader.")
 
     # read in csv file
-    train_data = pd.read_csv(os.path.join(data_dir, "train.csv"), header=None, names=None)
+    train_data = pd.read_csv(os.path.join(data_dir, "train.csv"), header=None)
 
     # labels are first column
     train_y = torch.from_numpy(train_data[[0]].values).float().squeeze()
@@ -91,7 +91,7 @@ def train(model, train_loader, epochs, optimizer, criterion, device):
         # print loss stats
         print("Epoch: {}, Loss: {}".format(epoch, total_loss / len(train_loader)))
 
-    # save after all epochs
+    # save trained model, after all epochs
     save_model(model, args.model_dir)
 
 
@@ -146,6 +146,7 @@ if __name__ == '__main__':
                         help='hidden dim of model (default: 10)')
     parser.add_argument('--output_dim', type=int, default=1, metavar='OUT',
                         help='output dim of model (default: 1)')
+
     
     args = parser.parse_args()
 
@@ -176,4 +177,5 @@ if __name__ == '__main__':
     # Trains the model (given line of code, which calls the above training function)
     # This function *also* saves the model state dictionary
     train(model, train_loader, args.epochs, optimizer, criterion, device)
+    
     
